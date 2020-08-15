@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+  
+  timer-db:
+    image: yobasystems/alpine-mariadb
+    container_name: timer-db
+    volumes:
+      - /var/lib/mysql:/var/lib/mariadb
+    ports:
+      - 3306
+    environment:
+      - MYSQL_DATABASE=ipssi-timer
+      - MYSQL_USER=ipssi-timer-user
+      - MYSQL_PASSWORD=s3cr3t
+      - MYSQL_ROOT_PASSWORD=r00t_s3cr3t
+
+  timer-back:
+    build: ./timer-back
+    container_name: timer-back
+    environment:
+      - DATABASE_SERVER=timer-db
+      - MYSQL_DATABASE=ipssi-timer
+      - MYSQL_USER=ipssi-timer-user
+      - MYSQL_PASSWORD=s3cr3t
+    ports:
+      - 80:81
+    links:
+      - timer-db
+
+  timer-ui:
+    build: ./timer-ui
+    container_name: timer-ui
+    ports:
+      - 80:80
+    links:
+      - timer-back
+
+
+volumes:
+  timer-data:
