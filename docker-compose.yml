@@ -14,14 +14,28 @@ services:
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
 
   timer-back:
-    build: .docker/php
+    build: .docker/timer-back
     container_name: timer-back
     depends_on:
       - timer-database
     volumes:
       - './timer-back:/var/www/backend:cached'
+      - './timer-back/logs:/var/log/backend'
+    expose:
+      - '9000'
+
+  timer-web:
+    build: .docker/timer-web
+    container_name: timer-web
+    restart: always
+    depends_on:
+      - timer-back
+      - timer-database
+    volumes:
+      - './timer-back:/var/www/backend:cached'
+#      - './logs:/var/log/nginx'
     ports:
-       - '80:80'
+       - '81:80'
 
   timer-back-node:
     image: 'node:12-alpine'
@@ -31,14 +45,14 @@ services:
       - './timer-back:/var/www/backend:cached'
     working_dir: /var/www/backend
 
-  timer-back-composer:
-    image: 'composer:1.9'
-    container_name: timer-back-composer
-    command: install
-    depends_on:
-      - timer-back
-    volumes:
-      - './timer-back:/var/www/backend'
+  # timer-back-composer:
+  #   image: 'composer:1.9'
+  #   container_name: timer-back-composer
+  #   command: install
+  #   depends_on:
+  #     - timer-back
+  #   volumes:
+  #     - './timer-back:/var/www/backend'
 
   timer-back-pma:
     image: phpmyadmin/phpmyadmin
