@@ -1,4 +1,7 @@
 #! /bin/sh
 
-rm -rf timer-app timer-ui
-docker-composer down
+docker-compose down
+
+if [ -d timer-ui ]; then rm -rf timer-ui; fi
+if [ -d timer-back ]; then rm -rf timer-back; fi
+if [ -f .env ]; then rm -f .env; fi
