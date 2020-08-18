@@ -5,7 +5,7 @@ Timer-app englobe les répertoires [timer-back]() et [timer-front]().
 
 * **Interface d'administration** pour gérer les entités (utilisateurs, groupes, projets...)
 * **Interface utilisateur** avec un design moderne
-* **API** avec des méthodes simples
+* **API** contenant des méthodes simples à utiliser
 
 
 ## Comment ça fonctionne
