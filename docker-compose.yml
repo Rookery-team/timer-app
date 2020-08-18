@@ -1,11 +1,11 @@
 version: '3.7'
-services:
 
-  # Backend
+# Timer back
+services:
   timer-database:
-    image: 'mariadb:10'
+    image: mariadb:10
     container_name: timer-database
-    command: '--default-authentication-plugin=mysql_native_password'
+    command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -19,58 +19,47 @@ services:
     depends_on:
       - timer-database
     volumes:
-      - './timer-back:/var/www/backend:cached'
-      - './timer-back/logs:/var/log/backend'
-    expose:
-      - '9000'
-
-  timer-web:
-    build: .docker/timer-web
-    container_name: timer-web
-    restart: always
-    depends_on:
-      - timer-back
-      - timer-database
-    volumes:
-      - './timer-back:/var/www/backend:cached'
-#      - './logs:/var/log/nginx'
+      - .:/var/www:cached
     ports:
-       - '81:80'
+      - 80:80
+    expose:
+      - 80
+      - 81
 
   timer-back-node:
-    image: 'node:12-alpine'
+    image: node:12-alpine
     container_name: timer-back-node
     command: sh -c "yarn install && yarn encore dev --watch"
     volumes:
-      - './timer-back:/var/www/backend:cached'
-    working_dir: /var/www/backend
+      - ./timer-back:/app/timer-back:cached
+    working_dir: /app/timer-back
 
-  # timer-back-composer:
-  #   image: 'composer:1.9'
-  #   container_name: timer-back-composer
-  #   command: install
-  #   depends_on:
-  #     - timer-back
-  #   volumes:
-  #     - './timer-back:/var/www/backend'
+  timer-back-composer:
+    image: composer:1.9.0
+    container_name: timer-back-composer
+    command: install
+    depends_on:
+      - timer-back
+    volumes:
+      - .:/app/timer-back
 
-  timer-back-pma:
+  timer-phpmyadmin:
     image: phpmyadmin/phpmyadmin
-    container_name: timer-back-pma
+    container_name: timer-phpmyadmin
     environment:
-      - PMA_HOST=timer-database
+      - PMA_HOST=db
     ports:
-      - '8000:8000'
+      - 8000:80
     depends_on:
       - timer-database
-  # Fin backend -------------------------
+# End timer back
 
-  # Timer ui
+# Timer ui
   timer-ui-node:
-    image: 'node:12-alpine'
+    image: node:12-alpine
     container_name: timer-ui-node
     command: sh -c "yarn install && yarn watch"
     volumes:
-      - './timer-ui:/var/www/ui:cached'
-    working_dir: /var/www/ui
-  # Fin timer ui --------------------------
+      - ./timer-ui:/app/timer-ui:cached
+    working_dir: /app/timer-ui
+# End timer ui

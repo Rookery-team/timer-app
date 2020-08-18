@@ -1,41 +1,24 @@
-FROM ubuntu:20.04
+FROM php:7.3.10-apache-stretch
 
-ARG DEBIAN_FRONTEND=noninteractive
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-RUN apt-get update && apt-get install -my \
-  curl \
-  wget \
-  php-curl \
-  php-fpm \
-  php-gd \
-  php-xsl \
-  php-mysqlnd \
-#  php-mcrypt \
-  php-cli \
-  php-intl \
-  php-bz2 \
-  php-zip \
-  php-mbstring \
-  git \
-  zip \
-  php-apcu \
-  php-redis \
-  php-opcache
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini" \
+    && sed -i 's|variables_order = "GPCS"|variables_order = "EGPCS"|' "$PHP_INI_DIR/php.ini" \
+    && docker-php-ext-install pdo_mysql \
+    && pecl install xdebug-beta \
+    && docker-php-ext-enable xdebug
 
-# RUN mkdir /run/php
+RUN apt-get update && apt-get install -y \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libpng-dev \
+    && docker-php-ext-configure gd --with-jpeg-dir=/usr/include \
+    && docker-php-ext-configure calendar \
+    && docker-php-ext-install gd calendar
 
-ADD www.conf /etc/php/7.4/fpm/pool.d/www.conf
-ADD php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf
+COPY conf.d/xdebug.ini $PHP_INI_DIR/conf.d/xdebug.ini
+COPY default.conf /etc/apache2/sites-available/000-default.conf
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-RUN php composer-setup.php
-RUN php -r "unlink('composer-setup.php');"
-RUN mv composer.phar /usr/local/bin/composer
-RUN chmod +x /usr/local/bin/composer
-RUN ln -snf /usr/share/zoneinfo/Europe/Paris /etc/localtime
+RUN a2enmod rewrite
 
-WORKDIR /var/www/html/backend
-
-EXPOSE 9000
-
-CMD ["php-fpm7.4"]
+WORKDIR /var/www
