@@ -31,8 +31,8 @@ services:
     container_name: timer-back-node
     command: sh -c "yarn install && yarn encore dev --watch"
     volumes:
-      - ./timer-back:/app/timer-back:cached
-    working_dir: /app/timer-back
+      - ./timer-back:/var/www/timer-back:cached
+    working_dir: /var/www/timer-back
 
   timer-back-composer:
     image: composer:1.9.0
@@ -40,8 +40,7 @@ services:
     command: install
     depends_on:
       - timer-back
-    volumes:
-      - .:/app/timer-back
+    working_dir: /var/www/timer-back
 
   timer-phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -60,6 +59,6 @@ services:
     container_name: timer-ui-node
     command: sh -c "yarn install && yarn watch"
     volumes:
-      - ./timer-ui:/app/timer-ui:cached
-    working_dir: /app/timer-ui
+      - ./timer-ui:/var/www/timer-ui:cached
+    working_dir: /var/www/timer-ui
 # End timer ui
