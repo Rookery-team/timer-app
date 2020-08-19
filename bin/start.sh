@@ -7,6 +7,6 @@ git clone https://github.com/ipssi-timer/timer-back.git timer-back
 if [ -f .env ]; then sudo rm -f .env; fi
 cp -f .env.example .env
 
-sudo chown -R 777 .
+sudo chmod -R 777 .
 
-sh ./build.sh
+sh ./bin/build.sh
