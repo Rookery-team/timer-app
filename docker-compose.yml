@@ -20,7 +20,6 @@ services:
       - timer-database
     volumes:
       - .:/var/www
-      - ./timer-back:/var/www/timer-back
     ports:
       - 80:80
 
