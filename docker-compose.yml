@@ -19,19 +19,17 @@ services:
     depends_on:
       - timer-database
     volumes:
-      - .:/var/www:cached
+      - .:/var/www
+      - ./timer-back:/var/www/timer-back
     ports:
       - 80:80
-    expose:
-      - 80
-      - 81
 
   timer-back-node:
     image: node:12-alpine
     container_name: timer-back-node
     command: sh -c "yarn install && yarn encore dev --watch"
     volumes:
-      - ./timer-back:/var/www/timer-back:cached
+      - ./timer-back:/var/www/timer-back
     working_dir: /var/www/timer-back
 
   timer-back-composer:
@@ -59,6 +57,6 @@ services:
     container_name: timer-ui-node
     command: sh -c "yarn install && yarn watch"
     volumes:
-      - ./timer-ui:/var/www/timer-ui:cached
+      - ./timer-ui:/var/www/timer-ui
     working_dir: /var/www/timer-ui
 # End timer ui
