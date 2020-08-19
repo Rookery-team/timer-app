@@ -9,4 +9,4 @@ cp -f .env.example .env
 
 sudo chown -R 777 .
 
-sudo docker-compose up --build
+sh ./build.sh
