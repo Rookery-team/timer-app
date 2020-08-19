@@ -39,6 +39,8 @@ Trois scripts sont actuellement proposés :
 - **build** : lance les containers docker.
 - **clean** : nettoie ce qui a été fait dans le script *start*.
 
+Quelque soit l'environnement que vous utilisez, les commandes doivent être lancé depuis le répertoire racine de `timer-app`.
+
 ### Installation manuelle
 
 *A venir*
