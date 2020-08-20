@@ -27,7 +27,7 @@ services:
     image: phpmyadmin/phpmyadmin
     container_name: timer-phpmyadmin
     environment:
-      - PMA_HOST=db
+      - PMA_HOST=timer-database
     ports:
       - 8080:80
     depends_on:

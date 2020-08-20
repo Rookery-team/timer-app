@@ -13,8 +13,8 @@ help:
 # -------------------------
 # Une affaire de Docker
 
-.PHONY: pull
-pull: ## Extrait toutes les images Docker utilisées dans docker-compose.yml
+.PHONY: pull-images
+pull-images: ## Extrait toutes les images Docker utilisées dans docker-compose.yml
 	@echo "Extraction des images Docker..."
 	@docker-compose pull
 
@@ -22,7 +22,7 @@ pull: ## Extrait toutes les images Docker utilisées dans docker-compose.yml
 serve: ## Met en service l'ensemble de l'application
 	@echo "Lancement des images Docker..."
 	@docker-compose up -d
-	@echo "L'application est dorénavant accessible à l'adresse http://localhost !"
+	@echo "L'application est dorénavant accessible à l'adresse http://localhost:8000 !"
 
 .PHONY: down
 down: ## Stoppe l'application et supprime tous les containers, réseaux et volumes partagés
@@ -41,6 +41,7 @@ build: ## Extrait toutes les images Docker utilisées dans docker-compose.yml et
 
 .PHONY: clone
 clone: clone-timer-back clone-timer-ui ## Clone les répertoires git du projet
+	@chown -R ${ENV_USER}:${ENV_USER_GROUP} .
 
 .PHONY: clone-timer-back
 clone-timer-back: ## Clone le répertoire git `timer-back`
@@ -62,11 +63,28 @@ clone-timer-ui: ## Clone le répertoire git `timer-ui`
 	git clone https://${GIT_USER}:${GIT_PASSWORD}@github.com/ipssi-timer/timer-front.git timer-ui; \
 	echo "Répertoire 'timer-ui' cloné !"; \
 
+.PHONY: pull
+pull: pull-timer-back pull-timer-ui ## Met à jour les répertoires `timer-back` et `timer-ui`
+
+.PHONY: pull-timer-back
+pull-timer-back: ## Met à jour le répertoire git `timer-back`
+	@echo "Mise à jour du répertoire 'timer-back'..."
+	cd timer-back
+	git pull origin master
+	echo "Répertoire 'timer-back' mis à jour !"; \
+
+.PHONY: pull-timer-ui
+pull-timer-ui: ## Met à jour le répertoire git `timer-ui`
+	@echo "Mise à jour du répertoire 'timer-ui'..."
+	cd timer-ui
+	git pull origin master
+	echo "Répertoire 'timer-ui' mis à jour !"; \
+
 # -------------------------
 # Une affaire de répertoire
 
 .PHONY: clean
-clean: clean-timer-back clean-timer-ui ## Supprime les répertoires `timer-back` et `timer-ui` du projet
+clean: clean-timer-back clean-timer-ui ## Supprime les répertoires `timer-back` et `timer-ui`
 
 .PHONY: clean-timer-back
 clean-timer-back: ## Supprime le répertoire `timer-back`
@@ -83,8 +101,9 @@ clean-timer-ui: ## Supprime le répertoire `timer-ui`
 # -------------------------
 # Une affaire de projet
 
-.PHONY: run
-run: ## Construit l'ensemble du projet (Au clone jusqu'à la mise en service)
+.PHONY: install
+install: ## Installe l'application
+	@echo "Installation de l'application..."
 	@echo "Clonage des répertoires git de l'application..."
 	@make clone
 	@echo "Clonage de la configuration vers 'timer-back'..."
@@ -93,6 +112,11 @@ run: ## Construit l'ensemble du projet (Au clone jusqu'à la mise en service)
 	@make build
 	@echo "Installation des dépendences..."
 	@make dependencies
+	@echo "Installation terminée !"
+
+.PHONY: run
+run: ## Construit l'ensemble du projet (Au clone jusqu'à la mise en service)
+	@make install
 	@echo "Mise en service de l'application..."
 	@make serve
 
@@ -103,19 +127,19 @@ dependencies: timer-back/vendor timer-back/node_modules timer-ui/node_modules ##
 # Prépare les dépendences de l'application
 
 timer-back/composer.lock: timer-back/composer.json
-	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-back && composer install --prefer-dist --optimize-autoloader --no-interaction"
+	@docker-compose run -e COMPOSER_MEMORY_LIMIT=-1 --rm timer-back sh -c "cd /var/www/timer-back && composer install --prefer-dist --optimize-autoloader --no-interaction"
 
 timer-back/vendor: timer-back/composer.lock
-	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-back && composer install --prefer-dist --optimize-autoloader --no-interaction"
+	@docker-compose run -e COMPOSER_MEMORY_LIMIT=-1 --rm timer-back sh -c "cd /var/www/timer-back && composer install --prefer-dist --optimize-autoloader --no-interaction"
 
 # timer-back/yarn.lock: timer-back/package.json
 #	@docker-compose run --rm timer-back-node sh -c "cd /var/www/timer-back && yarn install && yarn encore dev"
 
 timer-back/node_modules: timer-back/yarn.lock
-	@docker-compose run --rm timer-back-node sh -c "cd /var/www/timer-back && yarn install --frozen-lockfile --check-files && yarn encore dev"
+	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-back && yarn install --non-interactive --frozen-lockfile --check-files && yarn encore dev"
 
 timer-ui/yarn.lock: timer-ui/package.json
-	@docker-compose run --rm timer-ui-node sh -c "cd /var/www/timer-ui && yarn install"
+	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-ui && yarn install --non-interactive"
 
 timer-ui/node_modules: timer-ui/yarn.lock
-	@docker-compose run --rm timer-ui-node sh -c "cd /var/www/timer-ui && yarn install --frozen-lockfile --check-files"
+	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-ui && yarn install --non-interactive --frozen-lockfile --check-files"
