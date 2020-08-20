@@ -3,15 +3,28 @@ include .env
 
 SHELL = /bin/bash
 
+ifndef VERBOSE
+.SILENT:
+endif
 
 .PHONY: help
 help:
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' 'Makefile' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@echo "Utilisation : make [COMMAND]"
+	@make project
+	@make repository
+	@make docker
+	@make git
 
 .DEFAULT_GOAL := help
 
 # -------------------------
 # Une affaire de Docker
+
+.PHONY: docker
+docker: ## Affiche les commandes utilisant Docker
+	@echo "Commandes utilisant Docker :"
+	@grep -E '^(pull-images|serve|down|build)+:.*?## .*$$' 'Makefile' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
 
 .PHONY: pull-images
 pull-images: ## Extrait toutes les images Docker utilisées dans docker-compose.yml
@@ -38,6 +51,11 @@ build: ## Extrait toutes les images Docker utilisées dans docker-compose.yml et
 
 # -------------------------
 # Une affaire de Git
+
+.PHONY: git
+git: ## Affiche les commandes utilisant Git
+	@echo "Commandes utilisant Git :"
+	@grep -E '^(clone(-[a-zA-Z0-9\-]+)?)|(pull(-[a-zA-Z0-9\-]+)?)+:.*?## .*$$' 'Makefile' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: clone
 clone: clone-timer-back clone-timer-ui ## Clone les répertoires git du projet
@@ -83,6 +101,11 @@ pull-timer-ui: ## Met à jour le répertoire git `timer-ui`
 # -------------------------
 # Une affaire de répertoire
 
+.PHONY: repository
+repository: ## Affiche les commandes manipulant le répertoire
+	@echo "Commandes manipulant le répertoire :"
+	@grep -E '^(clean(-[a-zA-Z0-9\-]+)?)+:.*?## .*$$' 'Makefile' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
 .PHONY: clean
 clean: clean-timer-back clean-timer-ui ## Supprime les répertoires `timer-back` et `timer-ui`
 
@@ -100,6 +123,11 @@ clean-timer-ui: ## Supprime le répertoire `timer-ui`
 
 # -------------------------
 # Une affaire de projet
+
+.PHONY: project
+project: ## Affiche les commandes manipulant le projet
+	@echo "Commandes manipulant le projet :"
+	@grep -E '^(install|run|dependencies)+:.*?## .*$$' 'Makefile' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: install
 install: ## Installe l'application
