@@ -20,6 +20,7 @@ services:
       - timer-database
     volumes:
       - .:/var/www
+      - /var/www/.env:/var/www/timer-back/.env:ro
     ports:
       - 80:80
 
@@ -31,13 +32,13 @@ services:
       - ./timer-back:/var/www/timer-back
     working_dir: /var/www/timer-back
 
-  timer-back-composer:
-    image: composer:1.9.0
-    container_name: timer-back-composer
-    command: install
-    depends_on:
-      - timer-back
-    working_dir: /var/www/timer-back
+#  timer-back-composer:
+#    image: composer:1.9.0
+#    container_name: timer-back-composer
+#    command: install
+#    depends_on:
+#      - timer-back
+#    working_dir: /var/www/timer-back
 
   timer-phpmyadmin:
     image: phpmyadmin/phpmyadmin
