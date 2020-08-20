@@ -1,4 +1,4 @@
-FROM php:7.3.10-apache-stretch
+FROM php:7.4-apache
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -13,9 +13,13 @@ RUN apt-get update && apt-get install -y \
         libjpeg62-turbo-dev \
         libpng-dev \
         git \
-    && docker-php-ext-configure gd --with-jpeg-dir=/usr/include \
+        zip \
+        unzip \
+        libzip-dev \
+    && docker-php-ext-configure gd --with-jpeg=/usr/include \
     && docker-php-ext-configure calendar \
-    && docker-php-ext-install gd calendar
+    && docker-php-ext-install gd calendar zip
+
 
 COPY conf.d/xdebug.ini $PHP_INI_DIR/conf.d/xdebug.ini
 COPY default.conf /etc/apache2/sites-available/000-default.conf

@@ -1,6 +1,5 @@
 version: '3.7'
 
-# Timer back
 services:
   timer-database:
     image: mariadb:10
@@ -20,25 +19,9 @@ services:
       - timer-database
     volumes:
       - .:/var/www
-      - /var/www/.env:/var/www/timer-back/.env:ro
     ports:
-      - 80:80
-
-  timer-back-node:
-    image: node:12-alpine
-    container_name: timer-back-node
-    command: sh -c "yarn install && yarn encore dev --watch"
-    volumes:
-      - ./timer-back:/var/www/timer-back
-    working_dir: /var/www/timer-back
-
-#  timer-back-composer:
-#    image: composer:1.9.0
-#    container_name: timer-back-composer
-#    command: install
-#    depends_on:
-#      - timer-back
-#    working_dir: /var/www/timer-back
+      - 8000:8000
+      - 8001:8001
 
   timer-phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -46,17 +29,6 @@ services:
     environment:
       - PMA_HOST=db
     ports:
-      - 8000:80
+      - 8080:80
     depends_on:
       - timer-database
-# End timer back
-
-# Timer ui
-  timer-ui-node:
-    image: node:12-alpine
-    container_name: timer-ui-node
-    command: sh -c "yarn install && yarn watch"
-    volumes:
-      - ./timer-ui:/var/www/timer-ui
-    working_dir: /var/www/timer-ui
-# End timer ui

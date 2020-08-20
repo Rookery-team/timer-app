@@ -48,8 +48,9 @@ clone-timer-back: ## Clone le répertoire git `timer-back`
 	@if [ -d "timer-back" ]; then \
 		echo "Répertoire 'timer-back déjà existant !"; \
 		make clean-timer-back; \
-		git clone https://${GIT_USER}:${GIT_PASSWORD}@github.com/ipssi-timer/timer-back.git timer-back; \
 	fi; \
+	git clone https://${GIT_USER}:${GIT_PASSWORD}@github.com/ipssi-timer/timer-back.git timer-back; \
+	echo "Répertoire 'timer-back cloné !"; \
 
 .PHONY: clone-timer-ui
 clone-timer-ui: ## Clone le répertoire git `timer-ui`
@@ -57,8 +58,9 @@ clone-timer-ui: ## Clone le répertoire git `timer-ui`
 	@if [ -d "timer-ui" ]; then \
 		echo "Répertoire 'timer-ui' déjà existant !"; \
 		make clean-timer-ui; \
-		git clone https://${GIT_USER}:${GIT_PASSWORD}@github.com/ipssi-timer/timer-front.git timer-ui; \
 	fi; \
+	git clone https://${GIT_USER}:${GIT_PASSWORD}@github.com/ipssi-timer/timer-front.git timer-ui; \
+	echo "Répertoire 'timer-ui' cloné !"; \
 
 # -------------------------
 # Une affaire de répertoire
@@ -85,9 +87,10 @@ clean-timer-ui: ## Supprime le répertoire `timer-ui`
 run: ## Construit l'ensemble du projet (Au clone jusqu'à la mise en service)
 	@echo "Clonage des répertoires git de l'application..."
 	@make clone
+	@echo "Clonage de la configuration vers 'timer-back'..."
+	@cp -f .env timer-back/.env
 	@echo "Construction de l'application..."
 	@make build
-	@echo "Création d'un lien symbolique pour la configuration du projet..."
 	@echo "Installation des dépendences..."
 	@make dependencies
 	@echo "Mise en service de l'application..."
@@ -105,11 +108,11 @@ timer-back/composer.lock: timer-back/composer.json
 timer-back/vendor: timer-back/composer.lock
 	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-back && composer install --prefer-dist --optimize-autoloader --no-interaction"
 
-timer-back/yarn.lock: timer-back/package.json
-	@docker-compose run --rm timer-back-node sh -c "cd /var/www/timer-back/yarn install"
+# timer-back/yarn.lock: timer-back/package.json
+#	@docker-compose run --rm timer-back-node sh -c "cd /var/www/timer-back && yarn install && yarn encore dev"
 
 timer-back/node_modules: timer-back/yarn.lock
-	@docker-compose run --rm timer-back-node sh -c "cd /var/www/timer-back && yarn install --frozen-lockfile --check-files"
+	@docker-compose run --rm timer-back-node sh -c "cd /var/www/timer-back && yarn install --frozen-lockfile --check-files && yarn encore dev"
 
 timer-ui/yarn.lock: timer-ui/package.json
 	@docker-compose run --rm timer-ui-node sh -c "cd /var/www/timer-ui && yarn install"
