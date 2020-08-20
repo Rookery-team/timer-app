@@ -49,9 +49,9 @@ clone-timer-back: ## Clone le répertoire git `timer-back`
 	@if [ -d "timer-back" ]; then \
 		echo "Répertoire 'timer-back déjà existant !"; \
 		make clean-timer-back; \
-	fi; \
-	git clone https://${GIT_USER}:${GIT_PASSWORD}@github.com/ipssi-timer/timer-back.git timer-back; \
-	echo "Répertoire 'timer-back cloné !"; \
+	fi;
+	@git clone https://${GIT_USER}:${GIT_PASSWORD}@github.com/ipssi-timer/timer-back.git timer-back
+	@echo "Répertoire 'timer-back cloné !"
 
 .PHONY: clone-timer-ui
 clone-timer-ui: ## Clone le répertoire git `timer-ui`
@@ -59,9 +59,9 @@ clone-timer-ui: ## Clone le répertoire git `timer-ui`
 	@if [ -d "timer-ui" ]; then \
 		echo "Répertoire 'timer-ui' déjà existant !"; \
 		make clean-timer-ui; \
-	fi; \
-	git clone https://${GIT_USER}:${GIT_PASSWORD}@github.com/ipssi-timer/timer-front.git timer-ui; \
-	echo "Répertoire 'timer-ui' cloné !"; \
+	fi;
+	@git clone https://${GIT_USER}:${GIT_PASSWORD}@github.com/ipssi-timer/timer-front.git timer-ui
+	@echo "Répertoire 'timer-ui' cloné !"
 
 .PHONY: pull
 pull: pull-timer-back pull-timer-ui ## Met à jour les répertoires `timer-back` et `timer-ui`
@@ -69,16 +69,16 @@ pull: pull-timer-back pull-timer-ui ## Met à jour les répertoires `timer-back`
 .PHONY: pull-timer-back
 pull-timer-back: ## Met à jour le répertoire git `timer-back`
 	@echo "Mise à jour du répertoire 'timer-back'..."
-	cd timer-back
-	git pull origin master
-	echo "Répertoire 'timer-back' mis à jour !"; \
+	@cd timer-back
+	@git pull origin master
+	@echo "Répertoire 'timer-back' mis à jour !"
 
 .PHONY: pull-timer-ui
 pull-timer-ui: ## Met à jour le répertoire git `timer-ui`
 	@echo "Mise à jour du répertoire 'timer-ui'..."
-	cd timer-ui
-	git pull origin master
-	echo "Répertoire 'timer-ui' mis à jour !"; \
+	@cd timer-ui
+	@git pull origin master
+	@echo "Répertoire 'timer-ui' mis à jour !"
 
 # -------------------------
 # Une affaire de répertoire
@@ -132,8 +132,8 @@ timer-back/composer.lock: timer-back/composer.json
 timer-back/vendor: timer-back/composer.lock
 	@docker-compose run -e COMPOSER_MEMORY_LIMIT=-1 --rm timer-back sh -c "cd /var/www/timer-back && composer install --prefer-dist --optimize-autoloader --no-interaction"
 
-# timer-back/yarn.lock: timer-back/package.json
-#	@docker-compose run --rm timer-back-node sh -c "cd /var/www/timer-back && yarn install && yarn encore dev"
+timer-back/yarn.lock: timer-back/package.json
+	@docker-compose run --rm timer-back-node sh -c "cd /var/www/timer-back && yarn install && yarn encore dev"
 
 timer-back/node_modules: timer-back/yarn.lock
 	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-back && yarn install --non-interactive --frozen-lockfile --check-files && yarn encore dev"
