@@ -164,10 +164,10 @@ timer-back/yarn.lock: timer-back/package.json
 	@docker-compose run --rm timer-back-node sh -c "cd /var/www/timer-back && yarn install && yarn encore dev"
 
 timer-back/node_modules: timer-back/yarn.lock
-	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-back && yarn install --non-interactive --frozen-lockfile --check-files && yarn encore dev"
+	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-back && yarn install --non-interactive --frozen-lockfile --check-files && yarn encore dev --non-interactive"
 
 timer-ui/yarn.lock: timer-ui/package.json
-	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-ui && yarn install --non-interactive"
+	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-ui && yarn install --non-interactive && yarn build --non-interactive"
 
 timer-ui/node_modules: timer-ui/yarn.lock
-	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-ui && yarn install --non-interactive --frozen-lockfile --check-files"
+	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-ui && yarn install --non-interactive --frozen-lockfile --check-files && yarn build --non-interactive"
