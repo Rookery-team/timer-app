@@ -140,6 +140,8 @@ install: ## Installe l'application
 	@make build
 	@echo "Installation des dépendences..."
 	@make dependencies
+	@echo "Migrations de la base de données..."
+	@make dependencies
 	@echo "Installation terminée !"
 
 .PHONY: run
@@ -157,7 +159,7 @@ migrations: ## Execute les migrations de la base de données
 	@docker-compose run -e COMPOSER_MEMORY_LIMIT=-1 \
 		-e DATABASE_URL=${DATABASE_URL} \
 		--rm timer-back \
-		sh -c "cd /var/www/timer-back && php bin/console doctrine:migrations:migrate"
+		sh -c "cd /var/www/timer-back && php bin/console doctrine:schema:update --force --no-interaction"
 	@echo "Migrations exécutée !"
 
 # -------------------------
