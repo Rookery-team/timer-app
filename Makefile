@@ -127,7 +127,7 @@ clean-timer-ui: ## Supprime le répertoire `timer-ui`
 .PHONY: project
 project: ## Affiche les commandes manipulant le projet
 	@echo "Commandes manipulant le projet :"
-	@grep -E '^(install|run|dependencies)+:.*?## .*$$' 'Makefile' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@grep -E '^(install|run|dependencies|migrations)+:.*?## .*$$' 'Makefile' | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 .PHONY: install
 install: ## Installe l'application
@@ -151,20 +151,41 @@ run: ## Construit l'ensemble du projet (Au clone jusqu'à la mise en service)
 .PHONY: dependencies
 dependencies: timer-back/vendor timer-back/node_modules timer-ui/node_modules ## Construit les dépendences du projet
 
+.PHONY: migrations
+migrations: ## Execute les migrations de la base de données
+	@echo "Executions des migrations de la base de données..."
+	@docker-compose run -e COMPOSER_MEMORY_LIMIT=-1 \
+		-e DATABASE_URL=${DATABASE_URL} \
+		--rm timer-back \
+		sh -c "cd /var/www/timer-back && php bin/console doctrine:migrations:migrate"
+	@echo "Migrations exécutée !"
+
 # -------------------------
 # Prépare les dépendences de l'application
 
 timer-back/composer.lock: timer-back/composer.json
-	@docker-compose run -e COMPOSER_MEMORY_LIMIT=-1 --rm timer-back sh -c "cd /var/www/timer-back && composer install --prefer-dist --optimize-autoloader --no-interaction"
+	@docker-compose run -e COMPOSER_MEMORY_LIMIT=-1 \
+		-e DATABASE_URL=${DATABASE_URL} \
+		--rm timer-back \
+		sh -c "cd /var/www/timer-back && composer install --prefer-dist --optimize-autoloader --no-interaction"
 
 timer-back/vendor: timer-back/composer.lock
-	@docker-compose run -e COMPOSER_MEMORY_LIMIT=-1 --rm timer-back sh -c "cd /var/www/timer-back && composer install --prefer-dist --optimize-autoloader --no-interaction"
+	@docker-compose run -e COMPOSER_MEMORY_LIMIT=-1 \
+		-e DATABASE_URL=${DATABASE_URL} \
+		--rm timer-back \
+		sh -c "cd /var/www/timer-back && composer install --prefer-dist --optimize-autoloader --no-interaction"
 
 timer-back/yarn.lock: timer-back/package.json
-	@docker-compose run --rm timer-back-node sh -c "cd /var/www/timer-back && yarn install && yarn encore dev"
+	@docker-compose run -e COMPOSER_MEMORY_LIMIT=-1 \
+		-e DATABASE_URL=${DATABASE_URL} \
+		--rm timer-back \
+		sh -c "cd /var/www/timer-back && yarn install && yarn encore dev"
 
 timer-back/node_modules: timer-back/yarn.lock
-	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-back && yarn install --non-interactive --frozen-lockfile --check-files && yarn encore dev --non-interactive"
+	@docker-compose run -e COMPOSER_MEMORY_LIMIT=-1 \
+		-e DATABASE_URL=${DATABASE_URL} \
+		--rm timer-back \
+		sh -c "cd /var/www/timer-back && yarn install --non-interactive --frozen-lockfile --check-files && yarn encore dev --non-interactive"
 
 timer-ui/yarn.lock: timer-ui/package.json
 	@docker-compose run --rm timer-back sh -c "cd /var/www/timer-ui && yarn install --non-interactive && yarn build --non-interactive"

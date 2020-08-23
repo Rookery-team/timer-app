@@ -13,6 +13,8 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    networks:
+      - timer-app-network
 
   timer-back:
     build: .docker/timer-back
@@ -24,6 +26,8 @@ services:
     ports:
       - 8000:8000
       - 8001:8001
+    networks:
+      - timer-app-network
 
   timer-phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -34,3 +38,8 @@ services:
       - 8080:80
     depends_on:
       - timer-database
+    networks:
+      - timer-app-network
+
+networks:
+  timer-app-network:
