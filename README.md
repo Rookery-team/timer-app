@@ -1,6 +1,10 @@
 
+
 # Timer-app  
-  
+
+<img src="http://lorempixel.com/615/913/" align="right"
+     alt="Timer-app logo" width="120" height="178">  
+
 Timer est une application enregistrant le temps de travail d'un utilisateur dans un projet.   
 Timer-app englobe les répertoires [timer-back]() et [timer-front]().  
   
@@ -11,36 +15,59 @@ Timer-app englobe les répertoires [timer-back]() et [timer-front]().
   
 ## Comment ça fonctionne  
   
-1. Timer-app a été optimisé pour une installation via Docker-compose et une configuration via un fichier de configuration (`.env`). Docker-compose va charger la configuration et chercher les images à télécharger dans `docker-compose.yml`.  
-2. Si les dossiers `timer-back` et `timer-ui` ne sont pas présent, executer le script `start` présent dans le dossier `bin` (si vous avez un OS Unix-like : `start.sh`, si vous avez Microsoft Windows : `start.bat`). Celui-ci fera les clones des répertoires git dans le répertoire racine de `timer-app`.
-3. Le script `build` permet de lancer docker-composer, soit les containers nécesaires pour le fonctionnement de l'application.
-4. Des containers seront ensuite créé dont l'ensemble des containers est décrit dans la page de projet [Containers Docker]().
-5. Une fois les containers lancés, les différents interfaces seront accessibles depuis les ports 80 (interface utilisateur) et 81 (interface d'administration et API). Phpmyadmin est aussi accessible depuis le port 8000.
+1. L'application a été optimisé pour être installé via GNU Make et Docker compose. Un fichier de configuration `.env` sera lu par ces derniers afin d'avoir un fonctionnement optimal (cf [Fichier de configuration]()). A travers la commande `make`, une panoplie de commandes est proposée permettant de manipuler l'ensemble du projet. La commande `make run` étant la commande qui permet l'installation et la mise en service de l'application (cf [Utilisation de make]()).
+2. Une fois l'installation lancée, les répertoires `timer-back` et `timer-front` seront clonés et les containers  Docker faisant fonctionner ces répertoires seront construites. Ces containers auront, pour certains, des commandes qui seront lancées dans le but d'installer les dépendences nécessaires pour le projet et de construire les fichiers publiques (ici, dans le répertoire `public` ou `dist`).
+3. Après que l'installation soit finie, les containers sont mis en service. Si aucun problème n'a été rencontré, l'application sera accessible à ces adresses :
+	- [http://localhost:8000](http://localhost:8000)
+	- [http://localhost:8001](http://localhost:8001)
+	- [http://localhost:8080](http://localhost:8080)
 
 ## Table des matières
  
 - [Installation](#installation)
-    - [Via script](#via-script)
-    - [Installation manuelle](#installation-manuelle)
+    - [Pré-requis](#pre-requis)
+    - [Installation tout-en-un](#installation-tout-en-un)
+    - [Installation par étape](#installation-par-etape)
+- [Signaler un bug](#signaler-un-bug)
 - [License](#license)
 
 
 ## Installation
 
-Cette installation a été testé sur un environnement Linux avec le noyau 5.4.
+L'installation a été testé sur un environnement Linux avec le noyau 5.4 et macOS sous la version Catalina. 
 
-Quelque soit la manière d'installation, il est nécessaire d'installer Docker sur votre machine locale.
+### Pré-requis
+
+Vous retrouverez ici les outils dont vous aurez besoin pour installer le projet.
+
+* git
+* make
+* docker-compose
+
+Pour vérifier les pré-requis, vous pouvez lancer la commande suivante :
+```bash
+for cmd in make docker-compose git; do which $cmd > /dev/null || echo "Veuillez installer $cmd"; done
+```
+
+### Installation tout-en-un
+
+```bash
+make run
+```
+
+Si vous une erreur survient après l'execution de la commande, suivez [l'installation par étape](#installation-par-etape) (section ci-dessous) afin de localiser le problème. Une fois le problème localisé, consulter la section [Signaler un bug](#signaler-un-bug).
 
 
-### Via script
+### Installation par étape
 
-Trois scripts sont actuellement proposés :
-- **start** : télécharge les répertoires du projet tels que `timer-front` et `timer-back`.
-- **build** : lance les containers docker.
-- **clean** : nettoie ce qui a été fait dans le script *start*.
+*A venir*
 
-Quelque soit l'environnement que vous utilisez, les commandes doivent être lancé depuis le répertoire racine de `timer-app`.
 
-### Installation manuelle
+## Signaler un bug
+
+*A venir*
+
+
+## Licence
 
 *A venir*
