@@ -141,7 +141,7 @@ install: ## Installe l'application
 	@echo "Installation des dépendences..."
 	@make dependencies
 	@echo "Migrations de la base de données..."
-	@make dependencies
+	@make migrations
 	@echo "Installation terminée !"
 
 .PHONY: run
