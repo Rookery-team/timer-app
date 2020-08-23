@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-**Est-ce que cela répond à un problème ? **
+**Est-ce que cela répond à un problème ?**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
 **Description de la solution**
