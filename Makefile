@@ -140,8 +140,10 @@ install: ## Installe l'application
 	@make build
 	@echo "Installation des dépendences..."
 	@make dependencies
-	@echo "Migrations de la base de données..."
+	#@echo "Migrations de la base de données..."
 	@make migrations
+	#@echo "Mise en place des jeux de données..."
+	@make fixtures
 	@echo "Installation terminée !"
 
 .PHONY: run
@@ -161,6 +163,15 @@ migrations: ## Execute les migrations de la base de données
 		--rm timer-back \
 		sh -c "cd /var/www/timer-back && php bin/console doctrine:schema:update --force --no-interaction"
 	@echo "Migrations exécutée !"
+
+.PHONY: fixtures
+fixtures: ## Met en place les jeux de données dans la base de données.
+	@echo "Mise en place des jeux de données..."
+	@docker-compose run -e COMPOSER_MEMORY_LIMIT=-1 \
+		-e DATABASE_URL=${DATABASE_URL} \
+		--rm timer-back \
+		sh -c "cd /var/www/timer-back && php bin/console doctrine:fixtures:load --no-interaction"
+	@echo "Jeux de données mis en place !"
 
 # -------------------------
 # Prépare les dépendences de l'application
