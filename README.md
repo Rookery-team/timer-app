@@ -41,7 +41,9 @@ L'installation a été testé sur un environnement Linux avec le noyau 5.4 et ma
 Vous retrouverez ici les outils dont vous aurez besoin pour installer le projet.
 
 * git
+    * __Windows__ : [Voir Git4Windows](https://gitforwindows.org/)
 * make
+    * __Windows__ : [Solutions pour installer GNU Make sur Windows](https://stackoverflow.com/a/32127632)
 * docker-compose
 
 Pour vérifier les pré-requis, vous pouvez lancer la commande suivante :
