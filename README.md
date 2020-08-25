@@ -66,7 +66,7 @@ Si vous une erreur survient après l'execution de la commande, suivez [l'install
 
 * [Clonage des répertoires](#Clonage-des-repertoires)
 * [Copie du fichier de configuration](#Copie-du-fichier-de-configuration)
-* [Construction de l'application](#Construction-de-l"application)
+* [Construction de l'application](#Construction-de-lapplication)
 * [Installation des dépendences](#Installation-des-dépendences)
 * [Migrations de la base de données](#Migrations-de-la-base-de-données)
 * [Jeux de données](#Jeux-de-données)
