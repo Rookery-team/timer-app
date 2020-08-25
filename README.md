@@ -24,12 +24,12 @@ Timer-app englobe les répertoires [timer-back]() et [timer-front]().
 
 ## Table des matières
  
-- [Installation](#installation)
-    - [Pré-requis](#pre-requis)
-    - [Installation tout-en-un](#installation-tout-en-un)
-    - [Installation par étape](#installation-par-etape)
-- [Signaler un bug](#signaler-un-bug)
-- [License](#license)
+- [Installation](#Installation)
+    - [Pré-requis](#Pre-requis)
+    - [Installation tout-en-un](#Installation-tout-en-un)
+    - [Installation par étape](#Installation-par-étape)
+- [Signaler un bug](#Signaler-un-bug)
+- [License](#License)
 
 
 ## Installation
