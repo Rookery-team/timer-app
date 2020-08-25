@@ -45,6 +45,7 @@ Vous retrouverez ici les outils dont vous aurez besoin pour installer le projet.
 * make
     * __Windows__ : [Solutions pour installer GNU Make sur Windows](https://stackoverflow.com/a/32127632)
 * docker-compose
+    * __Linux/Max/Windows__ : [Installer Docker]([https://www.docker.com/get-started](https://www.docker.com/get-started))
 
 Pour vérifier les pré-requis, vous pouvez lancer la commande suivante :
 ```bash
@@ -54,6 +55,7 @@ for cmd in make docker-compose git; do which $cmd > /dev/null || echo "Veuillez 
 ### Installation tout-en-un
 
 ```bash
+git clone https://github.com/ipssi-timer/timer-app.git timehub
 make run
 ```
 
@@ -62,8 +64,48 @@ Si vous une erreur survient après l'execution de la commande, suivez [l'install
 
 ### Installation par étape
 
-*A venir*
+* [Clonage des répertoires](#Clonage-des-repertoires)
+* [Copie du fichier de configuration](#Copie-du-fichier-de-configuration)
+* [Construction de l'application](#Construction-de-l"application)
+* [Installation des dépendences](#Installation-des-dépendences)
+* [Migrations de la base de données](#Migrations-de-la-base-de-données)
+* [Jeux de données](#Jeux-de-données)
 
+#### Clonage des répertoires
+
+```bash
+make clone
+```
+
+#### Copie du fichier de configuration
+
+```bash
+cp -f .env timer-back/.env
+```
+
+#### Construction de l'application
+
+```bash
+make build
+```
+
+#### Installation des dépendences
+
+```bash
+make dependencies
+```
+
+#### Migrations de la base de données
+
+```bash
+make migrations
+```
+
+#### Jeux de données
+
+```bash
+make fixtures
+```
 
 ## Signaler un bug
 
