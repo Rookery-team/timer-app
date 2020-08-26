@@ -78,7 +78,7 @@ Si vous une erreur survient après l'execution de la commande, suivez [l'install
 
 ### Installation par étape
 
-* [Clonage des répertoires](#Clonage-des-repertoires)
+* [Clonage des répertoires](#Clonage-des-répertoires)
 * [Copie du fichier de configuration](#Copie-du-fichier-de-configuration)
 * [Construction de l'application](#Construction-de-lapplication)
 * [Installation des dépendences](#Installation-des-dépendences)
@@ -157,10 +157,23 @@ yarn encore dev
 make migrations
 ```
 
+Pour une installation manuelle, vous pouvez utilisez les commandes suivantes :
+
+```bash
+cd timer-back
+php bin/console doctrine:schema:update
+```
+
 #### Jeux de données
 
 ```bash
 make fixtures
+```
+
+Les jeux de données peuvent être misent en place via la commande suivante depuis le répertoire `timer-back` :
+
+```bash
+php bin/console doctrine:fixtures:load
 ```
 
 ### Lancer l'application
@@ -210,7 +223,7 @@ MYSQL_USER=ipssi-timer-user
 MYSQL_PASSWORD=s3cr3t
 MYSQL_ROOT_PASSWORD=r00t_s3cr3t
 
-DATABASE_URL=mariadb://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:3306/${MYSQL_DATABASE}
+DATABASE_URL=mysql://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:3306/${MYSQL_DATABASE}
 ```
 
 <!-- Note pour les utilisateurs Windows utilisant docker : Adresse IP du container pour l'host -->
