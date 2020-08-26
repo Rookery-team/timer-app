@@ -1,6 +1,4 @@
 
-
-
 # Timer-app  
 
 <img src="http://lorempixel.com/615/913/" align="right"
@@ -60,6 +58,14 @@ Pour vérifier les pré-requis, vous pouvez lancer la commande suivante :
 for cmd in make docker-compose git; do which $cmd > /dev/null || echo "Veuillez installer $cmd"; done
 ```
 
+Pour une installation sans Docker, vous aurez besoin de ces pré-requis :
+* NodeJS
+    * __Linux/Mac/Windows__ : [Installer NodeJS](https://nodejs.org/)
+* Yarn
+    * __Linux/Mac/Windows__ : `npm i -g yarn`
+* Composer
+    * __Linux/Mac/Windows__ : [Installer Composer]([https://getcomposer.org/download/](https://getcomposer.org/download/))
+
 ### Installation tout-en-un
 
 ```bash
@@ -95,8 +101,14 @@ git clone https://github.com/ipssi-timer/timer-back.git
 
 #### Copie du fichier de configuration
 
+Si vous êtes sur un noyau UNIX (soit Linux ou Mac OS) :
 ```bash
 cp -f .env timer-back/.env
+```
+
+Si vous êtes sur Windows :
+```batch
+copy .env timer-back/.env
 ```
 
 #### Construction de l'application
@@ -112,10 +124,31 @@ Pour une installation manuelle sans la commande `make`, vous pouvez utiliser les
 docker-compose build --pull
 ```
 
+Autrement, pour une installation sans docker, vous aurez besoin de construire chaque répertoire de l'application. Pour cela, passer à l'étape suivante.
+
 #### Installation des dépendences
 
 ```bash
 make dependencies
+```
+
+Pour une installation sans Docker, vous aurez besoin de construire séparement les répertoires.
+
+Dans un premier temps, construisez le répertoire timer-front en utilisant les commandes suivantes :
+
+```bash
+cd timer-front
+yarn
+yarn build
+```
+
+Dans un second temps, construisez le second répertoire en utilisant les commandes suivantes :
+
+```bash
+cd timer-back
+composer install
+yarn
+yarn encore dev
 ```
 
 #### Migrations de la base de données
