@@ -15,7 +15,7 @@ Timer-app englobe les répertoires [timer-back]() et [timer-front]().
   
 ## Comment ça fonctionne  
   
-1. L'application a été optimisé pour être installé via GNU Make et Docker compose. Un fichier de configuration `.env` sera lu par ces derniers afin d'avoir un fonctionnement optimal (cf [Fichier de configuration]()). A travers la commande `make`, une panoplie de commandes est proposée permettant de manipuler l'ensemble du projet. La commande `make run` étant la commande qui permet l'installation et la mise en service de l'application (cf [Utilisation de make]()).
+1. L'application a été optimisé pour être installé via GNU Make et Docker compose. Un fichier de configuration `.env` sera lu par ces derniers afin d'avoir un fonctionnement optimal (cf [Configuration](#Configuration)). A travers la commande `make`, une panoplie de commandes est proposée permettant de manipuler l'ensemble du projet. La commande `make run` étant la commande qui permet l'installation et la mise en service de l'application (cf [Installation par étape](#Installation-par-étape)).
 2. Une fois l'installation lancée, les répertoires `timer-back` et `timer-front` seront clonés et les containers  Docker faisant fonctionner ces répertoires seront construites. Ces containers auront, pour certains, des commandes qui seront lancées dans le but d'installer les dépendences nécessaires pour le projet et de construire les fichiers publiques (ici, dans le répertoire `public` ou `dist`).
 3. Après que l'installation soit finie, les containers sont mis en service. Si aucun problème n'a été rencontré, l'application sera accessible à ces adresses :
 	- [http://localhost:8000](http://localhost:8000)
@@ -28,6 +28,9 @@ Timer-app englobe les répertoires [timer-back]() et [timer-front]().
     - [Pré-requis](#Pre-requis)
     - [Installation tout-en-un](#Installation-tout-en-un)
     - [Installation par étape](#Installation-par-étape)
+    - [Lancer l'application](#Lancer-lapplication)
+- [Configuration](#Configuration)
+- [Contribuer](#Contribuer)
 - [Signaler un bug](#Signaler-un-bug)
 - [License](#License)
 
@@ -45,7 +48,7 @@ Vous retrouverez ici les outils dont vous aurez besoin pour installer le projet.
 * make
     * __Windows__ : [Solutions pour installer GNU Make sur Windows](https://stackoverflow.com/a/32127632)
 * docker-compose
-    * __Linux/Max/Windows__ : [Installer Docker](https://www.docker.com/get-started]
+    * __Linux/Max/Windows__ : [Installer Docker](https://www.docker.com/get-started)
     
 Pour vérifier les pré-requis, vous pouvez lancer la commande suivante :
 ```bash
@@ -77,6 +80,14 @@ Si vous une erreur survient après l'execution de la commande, suivez [l'install
 make clone
 ```
 
+Pour une installation manuelle sans la commande `make`, vous pouvez utiliser les commandes suivantes :
+
+
+```bash
+git clone https://github.com/ipssi-timer/timer-front.git
+git clone https://github.com/ipssi-timer/timer-back.git
+```
+
 #### Copie du fichier de configuration
 
 ```bash
@@ -87,6 +98,13 @@ cp -f .env timer-back/.env
 
 ```bash
 make build
+```
+
+Pour une installation manuelle sans la commande `make`, vous pouvez utiliser les commandes suivantes :
+
+
+```bash
+docker-compose build --pull
 ```
 
 #### Installation des dépendences
@@ -107,10 +125,23 @@ make migrations
 make fixtures
 ```
 
-## Signaler un bug
+### Lancer l'application
+
+```bash
+make serve
+```
+
+## Configuration
 
 *A venir*
 
+## Contribuer
+
+*A venir*
+
+## Signaler un bug
+
+Vous pouvez signaler votre bug en [ouvrant une issue]().
 
 ## Licence
 
