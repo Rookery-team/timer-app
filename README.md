@@ -26,7 +26,7 @@ Timer-app englobe les répertoires [timer-back]() et [timer-front]().
 ## Table des matières
  
 - [Installation](#Installation)
-    - [Pré-requis](#Pré-requis)
+    - [Pré-requis](#Pre-requis)
     - [Installation tout-en-un](#Installation-tout-en-un)
     - [Installation par étape](#Installation-par-étape)
     - [Lancer l'application](#Lancer-lapplication)
@@ -146,6 +146,11 @@ ENV_USER=
 ENV_USER_GROUP=
 ```
 
+Les variables permettent de définir le propriétaire et le groupe des fichiers qui seront manupulés.
+
+<!-- Note pour les utilisateurs UNIX : Commande pour voir l'utilisateur et les groupes -->
+<!-- Note pour les utilisateurs Windows : Groupe créé par docker -->
+
 #### Git
 
 ```
@@ -153,6 +158,8 @@ ENV_USER_GROUP=
 GIT_USER=
 GIT_PASSWORD=
 ```
+
+Les identifiants sont nécessaires pour se connecter à Github et cloner les répertoires de l'application.
 
 #### Symfony
 
@@ -171,12 +178,17 @@ MYSQL_ROOT_PASSWORD=r00t_s3cr3t
 DATABASE_URL=mariadb://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:3306/${MYSQL_DATABASE}
 ```
 
+<!-- Note pour les utilisateurs Windows utilisant docker : Adresse IP du container pour l'host -->
+<!-- Note pour les utilisateurs Windows n'utilisant pas docker : localhost pour l'host -->
+
 #### Docker
 
 ```
 # Evite les erreurs de type "timeout" avec composer
 COMPOSER_MEMORY_LIMIT=-1
 ```
+
+<!-- Pas nécessaire de modifier -->
 
 ## Tests
 
