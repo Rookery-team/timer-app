@@ -1,5 +1,6 @@
 
 
+
 # Timer-app  
 
 <img src="http://lorempixel.com/615/913/" align="right"
@@ -30,6 +31,7 @@ Timer-app englobe les répertoires [timer-back]() et [timer-front]().
     - [Installation par étape](#Installation-par-étape)
     - [Lancer l'application](#Lancer-lapplication)
 - [Configuration](#Configuration)
+- [Tests](#Tests)
 - [Contribuer](#Contribuer)
 - [Signaler un bug](#Signaler-un-bug)
 - [License](#License)
@@ -63,7 +65,7 @@ git clone https://github.com/ipssi-timer/timer-app.git timehub
 make run
 ```
 
-Si vous une erreur survient après l'execution de la commande, suivez [l'installation par étape](#installation-par-etape) (section ci-dessous) afin de localiser le problème. Une fois le problème localisé, consulter la section [Signaler un bug](#signaler-un-bug).
+Si vous une erreur survient après l'execution de la commande, suivez [l'installation par étape](#Installation-par-étape) (section ci-dessous) afin de localiser le problème. Une fois le problème localisé, consulter la section [Signaler un bug](#signaler-un-bug).
 
 
 ### Installation par étape
@@ -133,6 +135,50 @@ make serve
 ```
 
 ## Configuration
+
+Le fichier de configuration `.env` doit se situer dans le répertoire racine de l'application. Pour l'obtenir, vous devez copier le fichier `.env.example` en `.env`.
+
+#### Environnement 
+
+```
+# Utilisateur (et son groupe) pouvant manipuler les fichiers
+ENV_USER=
+ENV_USER_GROUP=
+```
+
+#### Git
+
+```
+# Permet le clonage HTTPS
+GIT_USER=
+GIT_PASSWORD=
+```
+
+#### Symfony
+
+```
+APP_ENV=dev
+APP_SECRET=c74b32b60a6b7a67e116cc9ad161e256
+
+# Ne pas toucher (sauf en cas de nécessité)
+MYSQL_HOST=timer-database
+MYSQL_PORT=3306
+MYSQL_DATABASE=ipssi-timer
+MYSQL_USER=ipssi-timer-user
+MYSQL_PASSWORD=s3cr3t
+MYSQL_ROOT_PASSWORD=r00t_s3cr3t
+
+DATABASE_URL=mariadb://${MYSQL_USER}:${MYSQL_PASSWORD}@${MYSQL_HOST}:3306/${MYSQL_DATABASE}
+```
+
+#### Docker
+
+```
+# Evite les erreurs de type "timeout" avec composer
+COMPOSER_MEMORY_LIMIT=-1
+```
+
+## Tests
 
 *A venir*
 
