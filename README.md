@@ -19,9 +19,9 @@ Timer-app englobe les répertoires [timer-back]() et [timer-front]().
 1. L'application a été optimisé pour être installé via GNU Make et Docker compose. Un fichier de configuration `.env` sera lu par ces derniers afin d'avoir un fonctionnement optimal (cf [Configuration](#Configuration)). A travers la commande `make`, une panoplie de commandes est proposée permettant de manipuler l'ensemble du projet. La commande `make run` étant la commande qui permet l'installation et la mise en service de l'application (cf [Installation par étape](#Installation-par-étape)).
 2. Une fois l'installation lancée, les répertoires `timer-back` et `timer-front` seront clonés et les containers  Docker faisant fonctionner ces répertoires seront construites. Ces containers auront, pour certains, des commandes qui seront lancées dans le but d'installer les dépendences nécessaires pour le projet et de construire les fichiers publiques (ici, dans le répertoire `public` ou `dist`).
 3. Après que l'installation soit finie, les containers sont mis en service. Si aucun problème n'a été rencontré, l'application sera accessible à ces adresses :
-	- [http://localhost:8000](http://localhost:8000)
-	- [http://localhost:8001](http://localhost:8001)
-	- [http://localhost:8080](http://localhost:8080)
+	- [http://localhost:8000](http://localhost:8000) `Interface utilisateur`
+	- [http://localhost:8001](http://localhost:8001) `Interface d'administration`
+	- [http://localhost:8080](http://localhost:8080) `PHPMyAdmin`
 
 ## Table des matières
  
@@ -42,6 +42,8 @@ Timer-app englobe les répertoires [timer-back]() et [timer-front]().
 L'installation a été testé sur un environnement Linux avec le noyau 5.4 et macOS sous la version Catalina. 
 
 ### Pré-requis
+
+> Un environnement bash est nécessaire pour faire fonctionner make (voire git). Si vous souhaitez ne pas utiliser make, référez-vous aux alternatives proposées dans [l'installation par étape](#Installation-par-étape).
 
 Vous retrouverez ici les outils dont vous aurez besoin pour installer le projet.
 
