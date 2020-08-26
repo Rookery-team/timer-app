@@ -48,7 +48,8 @@ Vous retrouverez ici les outils dont vous aurez besoin pour installer le projet.
 * make
     * __Windows__ : [Solutions pour installer GNU Make sur Windows](https://stackoverflow.com/a/32127632)
 * docker-compose
-    * __Linux/Max/Windows__ : [Installer Docker](https://www.docker.com/get-started)
+    * __Linux/Mac/Windows 10 Professionnal__ : [Installer Docker](https://www.docker.com/get-started)
+    * __Windows 10__ : [Installer Docker Toolbox](https://github.com/docker/toolbox/releases)
     
 Pour vérifier les pré-requis, vous pouvez lancer la commande suivante :
 ```bash
