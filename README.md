@@ -39,6 +39,10 @@ Timer-app englobe les répertoires [timer-back]() et [timer-front]().
 
 L'installation a été testé sur un environnement Linux avec le noyau 5.4 et macOS sous la version Catalina. 
 
+> Attention : Symfony a tendence a écrire sur le fichier .env malgré qu'il existe déjà.
+> Pour corriger cela, recopier le fichier .env comme cela est expliqué dans la section "[Installation par étape](#Installation-par-étape)"
+>
+
 ### Pré-requis
 
 > Un environnement bash est nécessaire pour faire fonctionner make (voire git). Si vous souhaitez ne pas utiliser make, référez-vous aux alternatives proposées dans [l'installation par étape](#Installation-par-étape).
