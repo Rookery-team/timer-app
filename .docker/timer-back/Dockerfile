@@ -29,6 +29,7 @@ COPY default.conf /etc/apache2/sites-available/000-default.conf
 
 
 RUN a2enmod rewrite
+RUN a2enmod headers
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
