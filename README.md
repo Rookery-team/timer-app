@@ -2,7 +2,7 @@
 # Timer-app  
 
 <img src="logo.png" align="right"
-     alt="Timer-app logo" width="375" height="375">  
+     alt="Timer-app logo" width="200" height="200">  
 
 Timer est une application enregistrant le temps de travail d'un utilisateur dans un projet.   
 Timer-app englobe les répertoires [timer-back]() et [timer-front]().  
